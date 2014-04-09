@@ -1,3 +1,7 @@
+---
+title: Intro to Functional Programming with CoffeeScript
+tags: functional programming, javascript, coffeescript, coffee-script, higher order function, hof, currying, curried function
+---
 
 Intro to Functional Programming with CoffeeScript
 +++++++++++++++++++++++++++++++++++++++++++++++++
