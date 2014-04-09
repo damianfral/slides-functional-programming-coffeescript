@@ -1,6 +1,8 @@
 
 Intro to Functional Programming with CoffeeScript
--------------------------------------------------
++++++++++++++++++++++++++++++++++++++++++++++++++
+
+`Damián Franco Álvarez <http://damianfral.github.io/blog/>`_
 
 Programming Paradigms
 +++++++++++++++++++++
@@ -277,3 +279,7 @@ Deeping into FP
 - Laziness
 
 - Recursion
+
+.. raw:: html
+
+	<img src='https://ga-beacon.appspot.com/UA-42041306-2/your-repo/page-name' style='display: none'
