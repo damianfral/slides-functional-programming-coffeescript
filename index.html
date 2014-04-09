@@ -74,7 +74,7 @@
 <section id="pure-functions" class="slide level1">
 <h1>Pure functions</h1>
 <ul>
-<li>The output of a pure function <strong>only depends</strong> on its inputs and.</li>
+<li>The output of a pure function <strong>only depends</strong> on its inputs</li>
 <li>Pure funcions does not have side effects</li>
 <li>Easier to design</li>
 <li>Easier to read/understand</li>
@@ -106,7 +106,7 @@ add7 10  # ==&gt; 17</code></pre></li>
 <dt>Functions that operate on other functions</dt>
 <dd><ul>
 <li>Takes one or more functions as input</li>
-<li>Output a function</li>
+<li>Outputs a function</li>
 </ul>
 </dd>
 </dl></li>
@@ -215,14 +215,12 @@ maxBy = (fn) -&gt;
             return x
 
 maximumBy = (fn) -&gt;
-    (list) -&gt;
-        fold1(maxBy(fn))(list)</code></pre>
+        fold1(maxBy(fn))</code></pre>
 </section>
 <section id="example-2" class="slide level1">
 <h1>Example</h1>
 <pre><code>reject = (fn) -&gt;
-    (list) -&gt;
-        return filter(compose [negate, fn]) (list)
+    return filter(compose [negate, fn])
 
 split = (fn) -&gt;
     (list) -&gt;

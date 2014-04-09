@@ -34,7 +34,7 @@ Some notes
 Pure functions
 ++++++++++++++
 
-- The output of a pure function **only depends** on its inputs and.
+- The output of a pure function **only depends** on its inputs
 
 - Pure funcions does not have side effects
 
@@ -70,7 +70,7 @@ Higher order functions
 
 - Functions that operate on other functions
 	+ Takes one or more functions as input
-	+ Output a function
+	+ Outputs a function
 
 - Well known examples: map, filter, reduce...
 
@@ -205,8 +205,7 @@ Example
 				return x
 
 	maximumBy = (fn) ->
-		(list) ->
-			fold1(maxBy(fn))(list)
+			fold1(maxBy(fn))
 
 Example
 +++++++
@@ -214,8 +213,7 @@ Example
 ::
 
 	reject = (fn) ->
-		(list) ->
-			return filter(compose [negate, fn]) (list)
+		return filter(compose [negate, fn])
 
 	split = (fn) ->
 		(list) ->
