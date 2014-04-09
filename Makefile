@@ -1,2 +1,2 @@
 index.html: README.rst
-	pandoc -t revealjs -s -V theme=beige README.rst -o index.html
+	pandoc -t revealjs -T "Intro to Functional Programming with CoffeeScript" -s -V  theme=beige README.rst -o index.html
