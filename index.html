@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <title>Intro to Functional Programming with CoffeeScript</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" href="reveal.js/css/reveal.min.css"/>
+    <style type="text/css">code{white-space: pre;}</style>
+    <link rel="stylesheet" href="reveal.js/css/theme/simple.css" id="theme">
+  <link rel="stylesheet" media="print" href="reveal.js/css/print/pdf.css" />
+  <!--[if lt IE 9]>
+  <script src="reveal.js/lib/js/html5shiv.js"></script>
+  <![endif]-->
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section>
+    <h1 class="title">Intro to Functional Programming with CoffeeScript</h1>
+    <h3 class="date"></h3>
+</section>
+
+<section id="programming-paradigms" class="slide level1">
+<h1>Programming Paradigms</h1>
+<ul>
+<li>What is a paradigm? Style, concepts, models, patterns...</li>
+<li><dl>
+<dt>Imperative programming</dt>
+<dd><ul>
+<li><dl>
+<dt>Structured programming (<em>C</em>)</dt>
+<dd><ul>
+<li>Problem: goto -&gt; Solution: subroutines and loops</li>
+</ul>
+</dd>
+</dl></li>
+<li><dl>
+<dt>Object oriented programming (<em>Java</em>)</dt>
+<dd><ul>
+<li>Problem: global state -&gt; Solution: encapsulation (classes, objects)</li>
+</ul>
+</dd>
+</dl></li>
+</ul>
+</dd>
+</dl></li>
+<li><dl>
+<dt>Declarative</dt>
+<dd><ul>
+<li><dl>
+<dt>Functional programming (<em>Haskell</em>)</dt>
+<dd><ul>
+<li>Problem: state -&gt; Solution: <strong>functions</strong> (morphism)</li>
+</ul>
+</dd>
+</dl></li>
+</ul>
+</dd>
+</dl></li>
+</ul>
+</section>
+<section id="some-notes" class="slide level1">
+<h1>Some notes</h1>
+<ul>
+<li>Open your mind</li>
+<li>Forget imperative programming</li>
+<li>The <em>click moment</em></li>
+</ul>
+</section>
+<section id="pure-functions" class="slide level1">
+<h1>Pure functions</h1>
+<ul>
+<li>The output of a pure function <strong>only depends</strong> on its inputs and.</li>
+<li>Pure funcions does not have side effects</li>
+<li>Easier to design</li>
+<li>Easier to read/understand</li>
+<li><strong>Easy to test</strong></li>
+<li>FP emphasize on writing pure, generic functions which could work in any environment, and choosing actual program behaviour at the top of the call hierarchy</li>
+</ul>
+</section>
+<section id="currying" class="slide level1">
+<h1>Currying</h1>
+<ul>
+<li><p>Transforming a function that receives multiple arguments into a function that receives only one argument:</p>
+<pre><code># ((a, b) -&gt; c) -&gt; a -&gt; b -&gt; c
+curry = (f) -&gt;
+    (a) -&gt;
+        (b) -&gt;
+            f(a,b)
+
+_add = (x,y) -&gt; x + y
+add  = curry _add
+add(2)(3) # ==&gt; 5
+add7 = add 7
+add7 10  # ==&gt; 17</code></pre></li>
+</ul>
+</section>
+<section id="higher-order-functions" class="slide level1">
+<h1>Higher order functions</h1>
+<ul>
+<li><dl>
+<dt>Functions that operate on other functions</dt>
+<dd><ul>
+<li>Takes one or more functions as input</li>
+<li>Output a function</li>
+</ul>
+</dd>
+</dl></li>
+<li>Well known examples: map, filter, reduce...</li>
+<li>HOFs facilitates composability and code reusability</li>
+</ul>
+</section>
+<section id="higher-order-functions-1" class="slide level1">
+<h1>Higher order functions</h1>
+<ul>
+<li><p>Writting pure higher order curried functions in CoffeeScript is easy and powefull:</p>
+<pre><code>map = (f) -&gt;
+    (list) -&gt;
+        return (f x for x in list)
+
+map(add7)([1, 2, 3]) # ==&gt; [ 9, 10, 12 ]</code></pre></li>
+</ul>
+</section>
+<section id="higher-order-functions-2" class="slide level1">
+<h1>Higher order functions</h1>
+<pre><code>filter = (f) -&gt;
+    (list) -&gt;
+        result = []
+        for x in list
+            result.push x if f x
+        return result
+
+odd = (num) -&gt; num % 2
+
+filter(odd)([1..10]) # ==&gt; [ 1, 3, 5, 7, 9 ]</code></pre>
+</section>
+<section id="higher-order-functions-3" class="slide level1">
+<h1>Higher order functions</h1>
+<pre><code>fold = (f) -&gt;
+    (init) -&gt;
+        acc = init
+        (list) -&gt;
+            acc = f(acc)(x) for x in list
+            return acc
+
+sum = fold(add)(0)
+
+sum [1..43] # ==&gt; 946
+
+mult    = (x) -&gt; (y) -&gt; x * y
+product = fold(mult)(1)
+
+factorial = (x) -&gt; product [1...x]
+factorial 6 # =&gt; 120</code></pre>
+</section>
+<section id="function-composition" class="slide level1">
+<h1>Function composition</h1>
+<pre><code>f :  B --&gt; C
+g :  A --&gt; B
+
+f . g :  A --&gt; C</code></pre>
+<pre><code>negate = (bool) -&gt; ! bool
+
+odd = (num) -&gt; num % 2
+
+even = compose(negate)(odd)</code></pre>
+</section>
+<section id="function-composition-1" class="slide level1">
+<h1>Function composition</h1>
+<pre><code>comp = (f) -&gt;
+    (g) -&gt;
+        (args...) -&gt;
+            return f(g.apply @, args)
+
+head = (list) -&gt; list[0]
+tail = (list) -&gt; list[1..]
+
+fold1 = (fn) -&gt;
+    (list) -&gt;
+        fold(fn)(head list)(tail list)
+
+compose = fold1(comp)
+
+# Naive example
+bestStudent = compose [head, (sortBy meanQualification), (filter hasPassedAllExames)]</code></pre>
+</section>
+<section id="example" class="slide level1">
+<h1>Example</h1>
+<ul>
+<li>Get the most common element in a list</li>
+</ul>
+<pre><code>mostCommon [1,7,200,6,3,7,7,999,1,44] # ==&gt; 7
+mostCommon &#39;functional programming!&#39;  # ==&gt; &#39;n&#39;</code></pre>
+</section>
+<section id="example-1" class="slide level1">
+<h1>Example</h1>
+<pre><code>compare = (x) -&gt;
+    (y) -&gt;
+        return  1 if x &gt; y
+        return -1 if x &lt; y
+        return  0
+
+equal  = (x) -&gt; (y) -&gt; x is y
+
+negate = (bool) -&gt; ! bool
+
+maxBy = (fn) -&gt;
+    (x) -&gt;
+        (y) -&gt;
+            return y if fn(x)(y) is -1
+            return x
+
+maximumBy = (fn) -&gt;
+    (list) -&gt;
+        fold1(maxBy(fn))(list)</code></pre>
+</section>
+<section id="example-2" class="slide level1">
+<h1>Example</h1>
+<pre><code>reject = (fn) -&gt;
+    (list) -&gt;
+        return filter(compose [negate, fn]) (list)
+
+split = (fn) -&gt;
+    (list) -&gt;
+        fullfilled  = filter(fn)(list)
+        rejected    = reject(fn)(list)
+        return [fullfilled, rejected]</code></pre>
+</section>
+<section id="example-3" class="slide level1">
+<h1>Example</h1>
+<pre><code>groupBy = (fn) -&gt;
+    (list) -&gt;
+        return [] unless list.length
+        x        = head list
+        xs       = tail list
+        [ys, zs] = split(fn x)(xs)
+        # Recursion
+        return [[x].concat(ys)].concat(groupBy(fn)(zs))
+
+group = groupBy equal
+
+group [6,7,8,6,7,8,9,1] # [ [ 6, 6 ], [ 7, 7 ], [ 8, 8 ], [ 9 ], [ 1 ] ]</code></pre>
+</section>
+<section id="example-4" class="slide level1">
+<h1>Example</h1>
+<pre><code>length        = (list)  -&gt; list.length
+compareLength = (list1) -&gt;
+    (list2) -&gt;
+        compare(length list1)(length list2)
+
+mostCommon = compose [head, (maximumBy compareLength), group]
+
+mostCommon [1,7,200,6,3,7,7,999,1,44] # ==&gt;  7
+mostCommon &#39;functional programming&#39;   # ==&gt; &#39;n&#39;</code></pre>
+</section>
+<section id="why-functional-programming" class="slide level1">
+<h1>Why functional programming?</h1>
+<ul>
+<li>Higher abstraction level</li>
+<li>Reusability</li>
+<li>Concision</li>
+<li>Readability</li>
+</ul>
+</section>
+<section id="deeping-into-fp" class="slide level1">
+<h1>Deeping into FP</h1>
+<ul>
+<li><strong>Algebraic data structures</strong></li>
+<li>Cathegory theory</li>
+<li>Typeclasses</li>
+<li>Laziness</li>
+<li>Recursion</li>
+</ul>
+</section>
+    </div>
+  </div>
+
+  <script src="reveal.js/lib/js/head.min.js"></script>
+  <script src="reveal.js/js/reveal.min.js"></script>
+
+  <script>
+
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        theme: 'beige', // available themes are in /css/theme
+        transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+        // Optional libraries used to extend on reveal.js
+        dependencies: [
+          { src: 'reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+          { src: 'reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+//          { src: 'reveal.js/plugin/search/search.js', async: true, condition: function() { return !!document.body.classList; }, }
+//          { src: 'reveal.js/plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+]});
+    </script>
+  </body>
+</html>
